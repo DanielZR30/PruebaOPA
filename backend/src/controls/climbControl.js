@@ -20,6 +20,7 @@ const climbControl = async (req,res) => {
       case "DELETE":
         break;
       default:
+        res.end()
         break;
     }
 }

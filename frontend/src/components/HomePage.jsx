@@ -1,10 +1,9 @@
 import React,{useEffect, useState} from 'react'
-import DynamicTable from './DinamicTable'
 
 const HomePage = () => {
 
-    const [elements,setElements] = useState([])
-    const [climbs,setClimbs] = useState([])
+    let [elements,setElements] = useState([])
+    let [climbs,setClimbs] = useState([])
     const [requirements,setRequirements] = useState({
         weight:0,
         calories:0
@@ -41,10 +40,12 @@ const HomePage = () => {
     }
 
     const calcular = () =>{
-        let res = fetch(`http://localhost:8000/elements`,{body:{
+        let res = fetch(`http://localhost:8000/elements`,{method:'POST',mode:'no-cors',headers:{
+            'Content-type':'application/json'
+        },body:JSON.stringify({
             elements:elements,
             requirements:requirements,
-        }})
+        })})
         .then((response) => response.json())
         .then((data) => console.log(data));
     }
@@ -78,7 +79,7 @@ const HomePage = () => {
             </div>
             <button className={`bg-blue-500 w-max p-1 px-4 mb-2 rounded text-white hover:bg-blue-600 transition-all`} onClick={e => addElement()}>Añadir</button>
         </div>
-        <div className='flex flex-col justify-center items-center m-5 border-[1px] rounded w-full'>
+        <form onSubmit={e => calcular()} className='flex flex-col justify-center items-center m-5 border-[1px] rounded w-full'>
             <h3 className='w-full text-center font-medium pt-1 rounded-t text-white bg-blue-500'>Requerimientos</h3>
             <div className='flex w-full justify-center mx-2 mb-2 mt-1'>
                 <div className='flex flex-col w-24 mr-2'>
@@ -91,13 +92,19 @@ const HomePage = () => {
                 </div>
                 
             </div>
-            <button className={`bg-green-500 w-max p-1 px-4 mb-2 rounded text-white hover:bg-green-600 transition-all`} onClick={e => addElement()}>Calcular</button>
-        </div>
+            <input type='submit' className={`bg-green-500 w-max p-1 px-4 mb-2 rounded text-white hover:bg-green-600 transition-all`} onClick={e => calcular()}/>
+        </form>
         <button className='bg-blue-500 text-center justify-center text-[2rem] rounded-lg font-bold text-white flex flex-col items-center m-5 border-[1px] rounded w-full' onClick={e => getClimbs()}>
             Consultar
         </button>
         </div>
-        <DynamicTable data={climbs}/>
+      <div className='flex flex-col justify-center items-center my-5  border-[1px] rounded w-[96%] h-[42rem]'>
+        
+        {
+            climbs.forEach(element => {
+            })
+        }
+      </div>
     </div>
   )
 }
